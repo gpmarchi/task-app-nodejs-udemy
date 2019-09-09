@@ -1,0 +1,26 @@
+{
+  "name": "task-app-nodejs-udemy",
+  "version": "1.0.0",
+  "description": "Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpmarchi/task-app-nodejs-udemy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gpmarchi/task-app-nodejs-udemy/issues"
+  },
+  "homepage": "https://github.com/gpmarchi/task-app-nodejs-udemy#readme",
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
+  }
+}
