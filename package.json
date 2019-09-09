@@ -4,7 +4,8 @@
   "description": "Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node mongodb.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
     "prettier": "^1.18.2"
+  },
+  "dependencies": {
+    "mongodb": "^3.3.2"
   }
 }
