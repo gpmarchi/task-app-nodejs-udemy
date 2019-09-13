@@ -57,6 +57,8 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
+// TODO: leave off this route for admin purposes, change user model to suport
+// admin only access to this method
 router.get("/users/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -77,6 +79,33 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
+// TODO: when refactoring this method for use with the controller, unify both
+// methods for dealing with user updates from the user or admin checking to see
+// if there is a user in the request or if there is an id in the params object
+router.patch("/users/me", auth, async (req, res) => {
+  const user = req.user;
+
+  const updates = Object.keys(req.body);
+  const allowedUpdates = Object.keys(User.prototype.schema.obj);
+  const isValidUpdate = updates.every(update =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidUpdate) {
+    return res.status(400).send({ error: "Invalid updates!" });
+  }
+
+  try {
+    updates.forEach(update => (user[update] = req.body[update]));
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// TODO: leave off this route for admin purposes, change user model to suport
+// admin only access to this method
 router.patch("/users/:id", async (req, res) => {
   const _id = req.params.id;
 
@@ -110,7 +139,20 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 
-router.delete("/users/:id", async (req, res) => {
+router.delete("/users/me", auth, async (req, res) => {
+  const user = req.user;
+
+  try {
+    await user.remove();
+    res.send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// TODO: leave off this route for admin purposes, change user model to suport
+// admin only access to this method
+router.delete("/users/:id", auth, async (req, res) => {
   const _id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
