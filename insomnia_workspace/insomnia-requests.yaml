@@ -1,0 +1,453 @@
+_type: export
+__export_format: 4
+__export_date: 2019-09-13T21:54:20.038Z
+__export_source: insomnia.desktop.app:v6.6.2
+resources:
+  - _id: req_8f5e7a8bc2b54e2d8e5c1fdba7757c14
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Jen",
+        	"email": "jen@gmail.com",
+        	"password": "pass#$123"
+        }
+    created: 1568137133383
+    description: ""
+    headers:
+      - id: pair_dbb10cba3e254ec394da6e5db1385396
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601794
+    method: POST
+    modified: 1568320074526
+    name: Create user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users"
+    _type: request
+  - _id: wrk_17ed5343046d4972b1df9ba1eda7600d
+    created: 1568136696619
+    description: ""
+    modified: 1568316275076
+    name: Tasks Manager API
+    parentId: null
+    _type: workspace
+  - _id: req_f0b0575178aa42528d7adc584675ca5d
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email":"doug@gmail.com",
+        	"password":"1234567"
+        }
+    created: 1568303619867
+    description: ""
+    headers:
+      - id: pair_da3c02dfe72741c3a95c51d1513d381a
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601769
+    method: POST
+    modified: 1568403721819
+    name: Login user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/login"
+    _type: request
+  - _id: req_5c34b93399874389a517b455ca135596
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568322101194
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601765.875
+    method: POST
+    modified: 1568322176625
+    name: Logout user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/logout"
+    _type: request
+  - _id: req_fc950334e846475ab511de6e8895d768
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568322847828
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601764.3125
+    method: POST
+    modified: 1568322871544
+    name: Logout all sessions
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/logoutAll"
+    _type: request
+  - _id: req_bcdda69b689149289ffe40588933e919
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"description": "Second task by Mike"
+        }
+    created: 1568139083563
+    description: ""
+    headers:
+      - id: pair_66f31f3cb6444ae39ffed3332363790a
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601762.75
+    method: POST
+    modified: 1568400553123
+    name: Create task
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/tasks"
+    _type: request
+  - _id: req_81ab5b7485184d4b8b7c7420d2ed9106
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568140122428
+    description: ""
+    headers:
+      - disabled: true
+        id: pair_a0b0ccd99de44a14926631b2d09015d3
+        name: ""
+        value: ""
+    isPrivate: false
+    metaSortKey: -1568226601756.5
+    method: GET
+    modified: 1568320922758
+    name: Show profile
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/me"
+    _type: request
+  - _id: req_7d69a617d7e74fd2860138a2388b2156
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568140616091
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601750.25
+    method: GET
+    modified: 1568391849967
+    name: Show user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/5d7a91ffae55830b0d407cae"
+    _type: request
+  - _id: req_f3a90abe94a34e708c17af0f5d34fb13
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568144949640
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601748.6875
+    method: GET
+    modified: 1568320382214
+    name: Show tasks
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/tasks"
+    _type: request
+  - _id: req_534937e9dfed43738e85be1dba717c3b
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568144997922
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601747.125
+    method: GET
+    modified: 1568400640621
+    name: Show task
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/tasks/5d7be4a37272d07e58869140"
+    _type: request
+  - _id: req_f9c4a39ac1104510a4f7fcbd0b0b18be
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"password": "passue#1234"
+        }
+    created: 1568223454093
+    description: ""
+    headers:
+      - id: pair_a33da4ecbe394541a8cbbec68ecf9e58
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601745.5625
+    method: PATCH
+    modified: 1568320387278
+    name: Update user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/5d7a5458cd153d52bc6739d7"
+    _type: request
+  - _id: req_af4b217195ba43269a84a89ea0a04a0d
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Doug",
+        	"email": "doug@gmail.com",
+        	"password": "1234567",
+        	"age": 30
+        }
+    created: 1568397949110
+    description: ""
+    headers:
+      - id: pair_a33da4ecbe394541a8cbbec68ecf9e58
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601745.1719
+    method: PATCH
+    modified: 1568398496292
+    name: Update profile
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/me"
+    _type: request
+  - _id: req_53def71fcfd643a5b14dcdd6339ceafd
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"description": "Second task by Mike updated",
+        	"completed": "true"
+        }
+    created: 1568224716423
+    description: ""
+    headers:
+      - id: pair_a33da4ecbe394541a8cbbec68ecf9e58
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601744.7812
+    method: PATCH
+    modified: 1568402262625
+    name: Update task
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/tasks/5d7bdfd1fc92416c205c36c8"
+    _type: request
+  - _id: req_1b11a6f5784c4220bd53d23633c94666
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568226601694
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601744.3906
+    method: DELETE
+    modified: 1568320391870
+    name: Delete user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/5d77e376423bf7d07ce0adb2"
+    _type: request
+  - _id: req_34deec8c45c345f49593ccd66702f08d
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568396621247
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601744.1953
+    method: DELETE
+    modified: 1568396636189
+    name: Delete profile
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/me"
+    _type: request
+  - _id: req_26057005c40e40f6a65694c205da5810
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568226739592
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601744
+    method: DELETE
+    modified: 1568402983581
+    name: Delete task
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/tasks/5d7be45f7272d07e5886913e"
+    _type: request
+  - _id: env_ab3ceb96040862593e1132a65a2b2683a9b63817
+    color: null
+    created: 1568136696794
+    data: {}
+    dataPropertyOrder: {}
+    isPrivate: false
+    metaSortKey: 1568136696794
+    modified: 1568316377589
+    name: Base Environment
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    _type: environment
+  - _id: jar_ab3ceb96040862593e1132a65a2b2683a9b63817
+    cookies: []
+    created: 1568136696798
+    modified: 1568136696798
+    name: Default Jar
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    _type: cookie_jar
+  - _id: env_ba5ec786091640959648016d86b57e4a
+    color: null
+    created: 1568316328665
+    data:
+      base_url: localhost:3000
+    dataPropertyOrder:
+      "&":
+        - base_url
+    isPrivate: false
+    metaSortKey: 1568316328665
+    modified: 1568320360568
+    name: Tasks Manager API (dev)
+    parentId: env_ab3ceb96040862593e1132a65a2b2683a9b63817
+    _type: environment
+  - _id: env_70a104fb08e942c6b05450d02138196a
+    color: null
+    created: 1568316577753
+    data: {}
+    dataPropertyOrder: null
+    isPrivate: false
+    metaSortKey: 1568316577753
+    modified: 1568316593681
+    name: Tasks Manager API (prod)
+    parentId: env_ab3ceb96040862593e1132a65a2b2683a9b63817
+    _type: environment
