@@ -57,6 +57,22 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
+// TODO: protect this route with authentication and only allow admin users to
+// access
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find({});
+
+    if (!users) {
+      res.status(404).send();
+    }
+
+    res.send(users);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // TODO: leave off this route for admin purposes, change user model to suport
 // admin only access to this method
 router.get("/users/:id", async (req, res) => {
