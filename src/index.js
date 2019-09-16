@@ -14,6 +14,8 @@ app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
 
+app.disable("x-powered-by");
+
 app.listen(port, () => {
   log(`Server is up on ${port}`);
 });
