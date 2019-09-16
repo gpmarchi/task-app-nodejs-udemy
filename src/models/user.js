@@ -50,7 +50,10 @@ const userSchema = new mongoose.Schema(
           required: true
         }
       }
-    ]
+    ],
+    avatar: {
+      type: Buffer
+    }
   },
   {
     timestamps: true
@@ -79,8 +82,11 @@ userSchema.methods.generateAuthToken = async function() {
 userSchema.methods.toJSON = function() {
   const user = this;
   const userRawObject = user.toObject();
+
   delete userRawObject.password;
   delete userRawObject.tokens;
+  delete userRawObject.avatar;
+
   return userRawObject;
 };
 
