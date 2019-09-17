@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2019-09-16T18:15:43.844Z
+__export_date: 2019-09-17T19:03:53.561Z
 __export_source: insomnia.desktop.app:v6.6.2
 resources:
   - _id: req_8f5e7a8bc2b54e2d8e5c1fdba7757c14
@@ -9,10 +9,10 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"name": "Jen",
-        	"email": "jen@gmail.com",
+        	"name": "Gustavo Pinto Marchi",
+        	"email": "gustavomarchi@gmail.com",
         	"password": "pass#$123",
-        	"age": 25
+        	"age": 38
         }
     created: 1568137133383
     description: ""
@@ -23,7 +23,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601794
     method: POST
-    modified: 1568552540719
+    modified: 1568735266108
     name: Create user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -47,7 +47,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"email":"jen@gmail.com",
+        	"email":"gustavomarchi@gmail.com",
         	"password":"pass#$123"
         }
     created: 1568303619867
@@ -59,7 +59,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601769
     method: POST
-    modified: 1568553140381
+    modified: 1568735404483
     name: Login user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -156,7 +156,7 @@ resources:
     body:
       mimeType: multipart/form-data
       params:
-        - fileName: /Users/gpmarchi/Downloads/node-course-images/profile-pic.jpg
+        - fileName: /Users/gpmarchi/Downloads/20190706_231531_e1b6bbe3b48c665471e5091e54f11746.png
           id: pair_a2f8f955fc26456e9290f5974474f8dd
           name: avatar
           type: file
@@ -170,7 +170,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601759.625
     method: POST
-    modified: 1568654902467
+    modified: 1568736311936
     name: Upload avatar
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -180,36 +180,6 @@ resources:
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{ base_url  }}/users/me/avatar"
-    _type: request
-  - _id: req_b1f310dce54a4f6b8a5e592d0b721b49
-    authentication: {}
-    body:
-      mimeType: multipart/form-data
-      params:
-        - fileName: /Users/gpmarchi/Downloads/node-course-images/fall.jpg
-          id: pair_a2f8f955fc26456e9290f5974474f8dd
-          name: upload
-          type: file
-          value: ""
-    created: 1568647086927
-    description: ""
-    headers:
-      - id: pair_4419e7a9ba604198ad1e7095a05c8df5
-        name: Content-Type
-        value: multipart/form-data
-    isPrivate: false
-    metaSortKey: -1568226601758.0625
-    method: POST
-    modified: 1568649318381
-    name: Test upload
-    parameters: []
-    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{ base_url  }}/upload"
     _type: request
   - _id: req_81ab5b7485184d4b8b7c7420d2ed9106
     authentication:
@@ -253,7 +223,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601754.9375
     method: GET
-    modified: 1568656874005
+    modified: 1568736341681
     name: Show avatar
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -262,7 +232,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d7e3a11ed8c380e25b81839/avatar"
+    url: "{{ base_url  }}/users/5d810415ef8ce6253dd6fccc/avatar"
     _type: request
   - _id: req_300048337a294758a0823030e1dce3d1
     authentication:
