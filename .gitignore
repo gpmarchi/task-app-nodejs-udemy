@@ -65,3 +65,6 @@ typings/
 
 # vscode
 .vscode
+
+# nodemon config file
+nodemon.json
