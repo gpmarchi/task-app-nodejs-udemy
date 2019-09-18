@@ -4,9 +4,15 @@
   "description": "Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "start": "node src/index.js",
     "dev": "nodemon -r dotenv/config src/index.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/tests/setup.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -20,12 +26,15 @@
   },
   "homepage": "https://github.com/gpmarchi/task-app-nodejs-udemy#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.18",
     "dotenv": "^8.1.0",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.2",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
