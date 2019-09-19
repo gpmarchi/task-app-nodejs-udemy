@@ -128,6 +128,22 @@ test("Should upload avatar image", async () => {
   expect(user.avatar).toEqual(expect.any(Buffer));
 });
 
+test("Should not upload invalid avatar image", async () => {
+  await request(app)
+    .post("/users/me/avatar")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .attach("avatar", "tests/fixtures/fall.jpg")
+    .expect(400);
+});
+
+test("Should not upload invalid file extension to avatar image", async () => {
+  await request(app)
+    .post("/users/me/avatar")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .attach("avatar", "tests/fixtures/sample-pdf-file.pdf")
+    .expect(400);
+});
+
 test("Should update valid user fields", async () => {
   const response = await request(app)
     .patch("/users/me")
