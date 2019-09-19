@@ -4,7 +4,7 @@
   "description": "Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)",
   "main": "app.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watch --runInBand",
     "start": "node src/index.js",
     "dev": "nodemon -r dotenv/config src/index.js"
   },
