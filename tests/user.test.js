@@ -1,24 +1,9 @@
 const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const app = require("../src/app");
 const User = require("../src/models/user");
+const { testUserOne, setupDatabase } = require("./fixtures/db");
 
-const testUserOneId = new mongoose.Types.ObjectId();
-const testUserOne = {
-  _id: testUserOneId,
-  name: "Mike",
-  email: "mike@example.com",
-  password: "56what!!",
-  tokens: [
-    { token: jwt.sign({ _id: testUserOneId }, process.env.JWT_SIGN_KEY) }
-  ]
-};
-
-beforeEach(async () => {
-  await User.deleteMany();
-  await new User(testUserOne).save();
-});
+beforeEach(setupDatabase);
 
 test("Should signup a new user", async () => {
   const response = await request(app)
@@ -42,6 +27,38 @@ test("Should signup a new user", async () => {
   });
 
   expect(user.password).not.toBe("mypass777!");
+});
+
+test("Should not signup a user with invalid name", async () => {
+  await request(app)
+    .post("/users")
+    .send({
+      email: "test@test.com",
+      password: "2397erwiueroi9@"
+    })
+    .expect(400);
+});
+
+test("Should not signup a user with invalid password", async () => {
+  await request(app)
+    .post("/users")
+    .send({
+      name: "Test",
+      email: "test@test.com",
+      password: "password"
+    })
+    .expect(400);
+});
+
+test("Should not signup a user with invalid email", async () => {
+  await request(app)
+    .post("/users")
+    .send({
+      name: "Test",
+      email: "test",
+      password: "1234567"
+    })
+    .expect(400);
 });
 
 test("Should login existing user", async () => {
@@ -127,5 +144,36 @@ test("Should not update invalid user fields", async () => {
     .patch("/users/me")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({ location: "Whatever" })
+    .expect(400);
+});
+
+test("Should not update unauthenticated user", async () => {
+  await request(app)
+    .patch("/users/me")
+    .send({ name: "Peter" })
+    .expect(401);
+});
+
+test("Should not update user with invalid name", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({ name: "" })
+    .expect(400);
+});
+
+test("Should not update user with invalid password", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({ password: "123456" })
+    .expect(400);
+});
+
+test("Should not update user with invalid email", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({ email: "jen@example.com" })
     .expect(400);
 });
