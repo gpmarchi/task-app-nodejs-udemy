@@ -29,6 +29,6 @@ router.delete("/users/me/avatar", auth, UserController.eraseAvatar);
 router.get("/admin/users", auth, UserController.listAll);
 router.get("/admin/users/:id", UserController.show);
 router.patch("admin/users/:id", UserController.update);
-router.delete("/users/:id", auth, UserController.erase);
+router.delete("admin/users/:id", auth, UserController.erase);
 
 module.exports = router;
