@@ -5,6 +5,7 @@ const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
 
 const save = async (req, res) => {
   const user = new User(req.body);
+  user.admin = false;
 
   try {
     await user.save();
@@ -139,7 +140,6 @@ const middlewareError = (error, req, res, next) => {
 };
 
 const listAll = async (req, res) => {
-  // TODO: only allow admin users to access this
   try {
     const users = await User.find({});
 
@@ -154,7 +154,6 @@ const listAll = async (req, res) => {
 };
 
 const show = async (req, res) => {
-  // TODO: change user model to suport admin only access to this method
   const _id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -175,7 +174,6 @@ const show = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  // TODO: change user model to suport admin only access to this method
   const _id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -209,7 +207,6 @@ const update = async (req, res) => {
 };
 
 const erase = async (req, res) => {
-  // TODO: change user model to suport admin only access to this method
   const _id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
