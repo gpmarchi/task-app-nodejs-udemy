@@ -1,7 +1,12 @@
 const request = require("supertest");
 const app = require("../src/app");
 const User = require("../src/models/user");
-const { testUserOne, setupDatabase } = require("./fixtures/db");
+const {
+  testAdminUser,
+  testUserOne,
+  testUserTwo,
+  setupDatabase
+} = require("./fixtures/db");
 
 beforeEach(setupDatabase);
 
@@ -11,7 +16,8 @@ test("Should signup a new user", async () => {
     .send({
       name: "Gustavo",
       email: "gustavo@example.com",
-      password: "mypass777!"
+      password: "mypass777!",
+      admin: true
     })
     .expect(201);
 
@@ -27,6 +33,7 @@ test("Should signup a new user", async () => {
   });
 
   expect(user.password).not.toBe("mypass777!");
+  expect(user.admin).toEqual(false);
 });
 
 test("Should not signup a user with invalid name", async () => {
@@ -148,11 +155,12 @@ test("Should update valid user fields", async () => {
   const response = await request(app)
     .patch("/users/me")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
-    .send({ name: "Peter" })
+    .send({ name: "Peter", admin: true })
     .expect(200);
 
   const user = await User.findById(testUserOne._id);
   expect(user.name).toEqual(response.body.name);
+  expect(user.admin).toEqual(false);
 });
 
 test("Should not update invalid user fields", async () => {
@@ -192,4 +200,73 @@ test("Should not update user with invalid email", async () => {
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({ email: "jen@example.com" })
     .expect(400);
+});
+
+test("Should not list all users if not admin", async () => {
+  await request(app)
+    .get("/admin/users")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .expect(400);
+});
+
+test("Should list all users if admin", async () => {
+  const response = await request(app)
+    .get("/admin/users")
+    .set("Authorization", `Bearer ${testAdminUser.tokens[0].token}`)
+    .expect(200);
+
+  expect(response.body.length).toEqual(3);
+});
+
+test("Should not show user by id if not admin", async () => {
+  await request(app)
+    .get(`/admin/users/${testUserTwo._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .expect(400);
+});
+
+test("Should show user by id if admin", async () => {
+  const response = await request(app)
+    .get(`/admin/users/${testUserOne._id}`)
+    .set("Authorization", `Bearer ${testAdminUser.tokens[0].token}`)
+    .expect(200);
+
+  expect(response.body.name).toEqual("Mike");
+});
+
+test("Should not update user by id if not admin", async () => {
+  await request(app)
+    .patch(`/admin/users/${testUserTwo._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({ name: "Larry" })
+    .expect(400);
+});
+
+test("Should update user by id if admin", async () => {
+  const response = await request(app)
+    .patch(`/admin/users/${testUserOne._id}`)
+    .set("Authorization", `Bearer ${testAdminUser.tokens[0].token}`)
+    .send({ name: "Larry" })
+    .expect(200);
+
+  expect(response.body.name).toEqual("Larry");
+});
+
+test("Should not delete user by id if not admin", async () => {
+  await request(app)
+    .delete(`/admin/users/${testUserTwo._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(400);
+});
+
+test("Should delete user by id if admin", async () => {
+  const response = await request(app)
+    .delete(`/admin/users/${testUserOne._id}`)
+    .set("Authorization", `Bearer ${testAdminUser.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const deletedUser = await User.findById(testUserOne._id);
+  expect(deletedUser).toBeNull();
 });

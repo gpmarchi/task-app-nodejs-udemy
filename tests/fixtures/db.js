@@ -3,6 +3,18 @@ const jwt = require("jsonwebtoken");
 const User = require("../../src/models/user");
 const Task = require("../../src/models/task");
 
+const testAdminUserId = new mongoose.Types.ObjectId();
+const testAdminUser = {
+  _id: testAdminUserId,
+  name: "admin",
+  email: "admin@test.com",
+  password: "56what!!",
+  tokens: [
+    { token: jwt.sign({ _id: testAdminUserId }, process.env.JWT_SIGN_KEY) }
+  ],
+  admin: true
+};
+
 const testUserOneId = new mongoose.Types.ObjectId();
 const testUserOne = {
   _id: testUserOneId,
@@ -49,6 +61,7 @@ const testTaskThree = {
 const setupDatabase = async () => {
   await User.deleteMany();
   await Task.deleteMany();
+  await new User(testAdminUser).save();
   await new User(testUserOne).save();
   await new User(testUserTwo).save();
   await new Task(testTaskOne).save();
@@ -57,6 +70,7 @@ const setupDatabase = async () => {
 };
 
 module.exports = {
+  testAdminUser,
   testUserOne,
   testUserTwo,
   testTaskOne,
