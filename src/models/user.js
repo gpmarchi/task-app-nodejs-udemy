@@ -53,6 +53,11 @@ const userSchema = new mongoose.Schema(
     ],
     avatar: {
       type: Buffer
+    },
+    admin: {
+      type: Boolean,
+      default: false,
+      immutable: true
     }
   },
   {
@@ -83,9 +88,12 @@ userSchema.methods.toJSON = function() {
   const user = this;
   const userRawObject = user.toObject();
 
-  delete userRawObject.password;
-  delete userRawObject.tokens;
-  delete userRawObject.avatar;
+  if (!user.admin) {
+    delete userRawObject.password;
+    delete userRawObject.tokens;
+    delete userRawObject.avatar;
+    delete userRawObject.admin;
+  }
 
   return userRawObject;
 };
