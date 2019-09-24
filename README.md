@@ -1,3 +1,3 @@
-# task-app-nodejs-udemy
+# task-manager-api
 
-Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)
+Task manager backend api for managing users and tasks.
