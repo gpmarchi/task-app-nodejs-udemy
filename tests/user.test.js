@@ -91,6 +91,53 @@ test("Should not login nonexisting user", async () => {
     .expect(401);
 });
 
+test("Should logout existing user", async () => {
+  const response = await request(app)
+    .patch("/users/logout")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const user = await User.findById(testUserOne._id);
+  expect(user.tokens).not.toContain(testUserOne.tokens[0].token);
+});
+
+test("Should not logout nonexisting user", async () => {
+  const response = await request(app)
+    .patch("/users/logout")
+    .send()
+    .expect(401);
+});
+
+test("Should logout all existing user sessions", async () => {
+  let response = await request(app)
+    .post("/users/login")
+    .send({
+      email: testUserOne.email,
+      password: testUserOne.password
+    })
+    .expect(200);
+
+  let user = await User.findById(testUserOne._id);
+  expect(user.tokens.length).toBe(2);
+
+  response = await request(app)
+    .delete("/users/logoutAll")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  user = await User.findById(testUserOne._id);
+  expect(user.tokens.length).toBe(0);
+});
+
+test("Should not logout all nonexisting user sessions", async () => {
+  response = await request(app)
+    .delete("/users/logoutAll")
+    .send()
+    .expect(401);
+});
+
 test("Should get profile for user", async () => {
   await request(app)
     .get("/users/me")
@@ -206,7 +253,7 @@ test("Should not list all users if not admin", async () => {
   await request(app)
     .get("/admin/users")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
-    .expect(400);
+    .expect(403);
 });
 
 test("Should list all users if admin", async () => {
@@ -222,7 +269,7 @@ test("Should not show user by id if not admin", async () => {
   await request(app)
     .get(`/admin/users/${testUserTwo._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
-    .expect(400);
+    .expect(403);
 });
 
 test("Should show user by id if admin", async () => {
@@ -239,7 +286,7 @@ test("Should not update user by id if not admin", async () => {
     .patch(`/admin/users/${testUserTwo._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({ name: "Larry" })
-    .expect(400);
+    .expect(403);
 });
 
 test("Should update user by id if admin", async () => {
@@ -257,7 +304,7 @@ test("Should not delete user by id if not admin", async () => {
     .delete(`/admin/users/${testUserTwo._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send()
-    .expect(400);
+    .expect(403);
 });
 
 test("Should delete user by id if admin", async () => {
