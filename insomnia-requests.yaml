@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2019-09-17T19:03:53.561Z
+__export_date: 2019-09-27T16:07:12.028Z
 __export_source: insomnia.desktop.app:v6.6.2
 resources:
   - _id: req_8f5e7a8bc2b54e2d8e5c1fdba7757c14
@@ -9,10 +9,10 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"name": "Gustavo Pinto Marchi",
-        	"email": "gustavomarchi@gmail.com",
+        	"name": "test3",
+        	"email": "test3@test.com",
         	"password": "pass#$123",
-        	"age": 38
+        	"admin": true
         }
     created: 1568137133383
     description: ""
@@ -23,7 +23,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601794
     method: POST
-    modified: 1568735266108
+    modified: 1569157404624
     name: Create user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -47,7 +47,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"email":"gustavomarchi@gmail.com",
+        	"email":"jen@gmail.com",
         	"password":"pass#$123"
         }
     created: 1568303619867
@@ -59,7 +59,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601769
     method: POST
-    modified: 1568735404483
+    modified: 1569596130018
     name: Login user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -70,52 +70,6 @@ resources:
     settingStoreCookies: true
     url: "{{ base_url  }}/users/login"
     _type: request
-  - _id: req_5c34b93399874389a517b455ca135596
-    authentication:
-      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
-        'b64::JC50b2tlbg==::46b', 'never' %}"
-      type: bearer
-    body: {}
-    created: 1568322101194
-    description: ""
-    headers: []
-    isPrivate: false
-    metaSortKey: -1568226601765.875
-    method: POST
-    modified: 1568552595652
-    name: Logout user
-    parameters: []
-    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{ base_url  }}/users/logout"
-    _type: request
-  - _id: req_fc950334e846475ab511de6e8895d768
-    authentication:
-      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
-        'b64::JC50b2tlbg==::46b', 'never' %}"
-      type: bearer
-    body: {}
-    created: 1568322847828
-    description: ""
-    headers: []
-    isPrivate: false
-    metaSortKey: -1568226601764.3125
-    method: POST
-    modified: 1568322871544
-    name: Logout all sessions
-    parameters: []
-    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingSendCookies: true
-    settingStoreCookies: true
-    url: "{{ base_url  }}/users/logoutAll"
-    _type: request
   - _id: req_bcdda69b689149289ffe40588933e919
     authentication:
       token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
@@ -123,9 +77,9 @@ resources:
       type: bearer
     body:
       mimeType: application/json
-      text: |-
+      text: >-
         {
-        	"description": "fourth",
+        	"description": "Add admin routes and allow access only if user has admin profile",
         	"completed": "false"
         }
     created: 1568139083563
@@ -137,7 +91,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601762.75
     method: POST
-    modified: 1568586381618
+    modified: 1568750246591
     name: Create task
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -170,7 +124,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601759.625
     method: POST
-    modified: 1568736311936
+    modified: 1569184584111
     name: Upload avatar
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -223,7 +177,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601754.9375
     method: GET
-    modified: 1568736341681
+    modified: 1569184604961
     name: Show avatar
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -232,11 +186,12 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d810415ef8ce6253dd6fccc/avatar"
+    url: "{{ base_url  }}/users/5d876d9e72dcb9528350db2a/avatar"
     _type: request
   - _id: req_300048337a294758a0823030e1dce3d1
     authentication:
-      token: ""
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
       type: bearer
     body: {}
     created: 1568500473954
@@ -245,8 +200,8 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601753.375
     method: GET
-    modified: 1568500497824
-    name: Show users
+    modified: 1569154980984
+    name: Admin show users
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
@@ -254,7 +209,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/"
+    url: "{{ base_url  }}/admin/users/"
     _type: request
   - _id: req_7d69a617d7e74fd2860138a2388b2156
     authentication:
@@ -268,8 +223,8 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601750.25
     method: GET
-    modified: 1568391849967
-    name: Show user
+    modified: 1569184621440
+    name: Admin show user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
@@ -277,7 +232,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d7a91ffae55830b0d407cae"
+    url: "{{ base_url  }}/admin/users/5d876d9e72dcb9528350db2a"
     _type: request
   - _id: req_f3a90abe94a34e708c17af0f5d34fb13
     authentication:
@@ -291,7 +246,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601748.6875
     method: GET
-    modified: 1568588057485
+    modified: 1569157568463
     name: Show tasks
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -300,7 +255,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/tasks?sortBy=createdAt:asc"
+    url: "{{ base_url  }}/tasks?limit=10&skip=0"
     _type: request
   - _id: req_534937e9dfed43738e85be1dba717c3b
     authentication:
@@ -314,7 +269,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601747.125
     method: GET
-    modified: 1568400640621
+    modified: 1569157605255
     name: Show task
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -323,7 +278,30 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/tasks/5d7be4a37272d07e58869140"
+    url: "{{ base_url  }}/tasks/5d7eba8e70c3f806bbd17748"
+    _type: request
+  - _id: req_5c34b93399874389a517b455ca135596
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568322101194
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601746.7344
+    method: PATCH
+    modified: 1569600380830
+    name: Logout user
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/logout"
     _type: request
   - _id: req_f9c4a39ac1104510a4f7fcbd0b0b18be
     authentication:
@@ -334,7 +312,8 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"password": "passue#1234"
+        	"password": "passue#1234",
+        	"admin": true
         }
     created: 1568223454093
     description: ""
@@ -345,8 +324,8 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601746.3438
     method: PATCH
-    modified: 1568500106097
-    name: Update user
+    modified: 1569155014649
+    name: Admin update user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
@@ -354,7 +333,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d7a5458cd153d52bc6739d7"
+    url: "{{ base_url  }}/admin/users/5d8761d49acaaa17496a131b"
     _type: request
   - _id: req_af4b217195ba43269a84a89ea0a04a0d
     authentication:
@@ -365,10 +344,10 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"name": "Doug",
-        	"email": "doug@gmail.com",
-        	"password": "1234567",
-        	"age": 30
+        	"name": "Jen",
+        	"email": "jen@gmail.com",
+        	"password": "pass#$123",
+        	"admin": true
         }
     created: 1568397949110
     description: ""
@@ -379,7 +358,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601745.1719
     method: PATCH
-    modified: 1568398496292
+    modified: 1569154127111
     name: Update profile
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -421,6 +400,29 @@ resources:
     settingStoreCookies: true
     url: "{{ base_url  }}/tasks/5d7e3a34ed8c380e25b8183c"
     _type: request
+  - _id: req_fc950334e846475ab511de6e8895d768
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1568322847828
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601744.586
+    method: DELETE
+    modified: 1569600385721
+    name: Logout all sessions
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/logoutAll"
+    _type: request
   - _id: req_1b11a6f5784c4220bd53d23633c94666
     authentication:
       token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
@@ -433,8 +435,8 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601744.3906
     method: DELETE
-    modified: 1568320391870
-    name: Delete user
+    modified: 1569184681867
+    name: Admin delete user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
@@ -442,7 +444,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d77e376423bf7d07ce0adb2"
+    url: "{{ base_url  }}/admin/users/5d876d9e72dcb9528350db2a"
     _type: request
   - _id: req_34deec8c45c345f49593ccd66702f08d
     authentication:
@@ -456,7 +458,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601744.1953
     method: DELETE
-    modified: 1568396636189
+    modified: 1569184686284
     name: Delete profile
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -548,11 +550,14 @@ resources:
   - _id: env_70a104fb08e942c6b05450d02138196a
     color: null
     created: 1568316577753
-    data: {}
-    dataPropertyOrder: null
+    data:
+      base_url: https://marchi-task-manager-api.herokuapp.com
+    dataPropertyOrder:
+      "&":
+        - base_url
     isPrivate: false
     metaSortKey: 1568316577753
-    modified: 1568316593681
+    modified: 1568748572059
     name: Tasks Manager API (prod)
     parentId: env_ab3ceb96040862593e1132a65a2b2683a9b63817
     _type: environment
