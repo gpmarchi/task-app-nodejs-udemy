@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = require("../../src/models/user");
 const Task = require("../../src/models/task");
+const Project = require("../../src/models/project");
 
 const testAdminUserId = new mongoose.Types.ObjectId();
 const testAdminUser = {
@@ -58,15 +59,47 @@ const testTaskThree = {
   owner: testUserTwo._id
 };
 
+const projectOneId = new mongoose.Types.ObjectId();
+const projectTwoId = new mongoose.Types.ObjectId();
+const projectThreeId = new mongoose.Types.ObjectId();
+
+const testProjectOne = {
+  _id: projectOneId,
+  name: "First project",
+  owner: testUserOne._id,
+  ancestor: null,
+  children: [projectTwoId]
+};
+
+const testProjectTwo = {
+  _id: projectTwoId,
+  name: "Second project",
+  owner: testUserOne._id,
+  ancestor: projectOneId,
+  children: []
+};
+
+const testProjectThree = {
+  _id: projectThreeId,
+  name: "Third project",
+  owner: testUserTwo._id,
+  ancestor: null,
+  children: []
+};
+
 const setupDatabase = async () => {
   await User.deleteMany();
   await Task.deleteMany();
+  await Project.deleteMany();
   await new User(testAdminUser).save();
   await new User(testUserOne).save();
   await new User(testUserTwo).save();
   await new Task(testTaskOne).save();
   await new Task(testTaskTwo).save();
   await new Task(testTaskThree).save();
+  await new Project(testProjectOne).save();
+  await new Project(testProjectTwo).save();
+  await new Project(testProjectThree).save();
 };
 
 module.exports = {
@@ -76,5 +109,8 @@ module.exports = {
   testTaskOne,
   testTaskTwo,
   testTaskThree,
+  testProjectOne,
+  testProjectTwo,
+  testProjectThree,
   setupDatabase
 };
