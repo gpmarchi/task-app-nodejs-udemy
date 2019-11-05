@@ -1,7 +1,7 @@
 {
-  "name": "task-app-nodejs-udemy",
+  "name": "task-manager-api",
   "version": "1.0.0",
-  "description": "Tasks manager app exercise from Udemy course The Complete Node.js Developer Course (3rd Edition)",
+  "description": "Tasks manager app based on Udemy course The Complete Node.js Developer and Todoist",
   "main": "app.js",
   "scripts": {
     "test": "jest --watch --runInBand",
@@ -16,23 +16,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gpmarchi/task-app-nodejs-udemy.git"
+    "url": "git+https://github.com/gpmarchi/task-manager-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gpmarchi/task-app-nodejs-udemy/issues"
+    "url": "https://github.com/gpmarchi/task-manager-api/issues"
   },
-  "homepage": "https://github.com/gpmarchi/task-app-nodejs-udemy#readme",
+  "homepage": "https://github.com/gpmarchi/task-manager-api#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "dotenv": "^8.1.0",
-    "eslint": "^6.3.0",
-    "eslint-config-prettier": "^6.2.0",
-    "eslint-plugin-prettier": "^3.1.0",
+    "@types/jest": "^24.0.22",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.2",
+    "nodemon": "^1.19.4",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2"
   },
@@ -41,10 +41,10 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.3.2",
-    "mongoose": "^5.7.0",
+    "mongodb": "^3.3.3",
+    "mongoose": "^5.7.8",
     "multer": "^1.4.2",
-    "sharp": "^0.23.0",
+    "sharp": "^0.23.2",
     "validator": "^11.1.0"
   }
 }
