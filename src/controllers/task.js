@@ -65,7 +65,6 @@ const show = async (req, res) => {
 
     res.send(task);
   } catch (error) {
-    log(error);
     res.status(500).send(error);
   }
 };
