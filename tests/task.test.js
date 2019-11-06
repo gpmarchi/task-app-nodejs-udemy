@@ -6,7 +6,6 @@ const {
   testUserTwo,
   testTaskOne,
   testTaskTwo,
-  testTaskThree,
   setupDatabase
 } = require("./fixtures/db");
 
@@ -58,7 +57,7 @@ test("Should update task from logged in user", async () => {
 });
 
 test("Should not update task with invalid description", async () => {
-  const response = await request(app)
+  await request(app)
     .patch(`/tasks/${testTaskOne._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({
@@ -84,7 +83,7 @@ test("Should update task with invalid completed flag", async () => {
 });
 
 test("Should not update task with invalid field", async () => {
-  const response = await request(app)
+  await request(app)
     .patch(`/tasks/${testTaskOne._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({
@@ -94,7 +93,7 @@ test("Should not update task with invalid field", async () => {
 });
 
 test("Should delete user task from logged in user", async () => {
-  const response = await request(app)
+  await request(app)
     .delete(`/tasks/${testTaskOne._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send()
@@ -105,7 +104,7 @@ test("Should delete user task from logged in user", async () => {
 });
 
 test("Should not delete task if unauthenticated", async () => {
-  const response = await request(app)
+  await request(app)
     .delete(`/tasks/${testTaskOne._id}`)
     .send()
     .expect(401);
@@ -138,7 +137,7 @@ test("Should fetch user task by id", async () => {
 });
 
 test("Should not fetch user task by id if unauthenticated", async () => {
-  const response = await request(app)
+  await request(app)
     .get(`/tasks/${testTaskOne._id}`)
     .send()
     .expect(401);
@@ -264,7 +263,7 @@ test("Should not update other users task", async () => {
 });
 
 test("Should not fetch other users task by id", async () => {
-  const response = await request(app)
+  await request(app)
     .get(`/tasks/${testTaskOne._id}`)
     .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
     .send()
