@@ -1,6 +1,8 @@
 const request = require("supertest");
 const app = require("../src/app");
 const User = require("../src/models/user");
+const Project = require("../src/models/project");
+const Task = require("../src/models/task");
 const {
   testAdminUser,
   testUserOne,
@@ -92,7 +94,7 @@ test("Should not login nonexisting user", async () => {
 });
 
 test("Should logout existing user", async () => {
-  const response = await request(app)
+  await request(app)
     .patch("/users/logout")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send()
@@ -103,14 +105,14 @@ test("Should logout existing user", async () => {
 });
 
 test("Should not logout nonexisting user", async () => {
-  const response = await request(app)
+  await request(app)
     .patch("/users/logout")
     .send()
     .expect(401);
 });
 
 test("Should logout all existing user sessions", async () => {
-  let response = await request(app)
+  await request(app)
     .post("/users/login")
     .send({
       email: testUserOne.email,
@@ -121,7 +123,7 @@ test("Should logout all existing user sessions", async () => {
   let user = await User.findById(testUserOne._id);
   expect(user.tokens.length).toBe(2);
 
-  response = await request(app)
+  await request(app)
     .delete("/users/logoutAll")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send()
@@ -132,7 +134,7 @@ test("Should logout all existing user sessions", async () => {
 });
 
 test("Should not logout all nonexisting user sessions", async () => {
-  response = await request(app)
+  await request(app)
     .delete("/users/logoutAll")
     .send()
     .expect(401);
@@ -308,7 +310,7 @@ test("Should not delete user by id if not admin", async () => {
 });
 
 test("Should delete user by id if admin", async () => {
-  const response = await request(app)
+  await request(app)
     .delete(`/admin/users/${testUserOne._id}`)
     .set("Authorization", `Bearer ${testAdminUser.tokens[0].token}`)
     .send()
@@ -316,4 +318,19 @@ test("Should delete user by id if admin", async () => {
 
   const deletedUser = await User.findById(testUserOne._id);
   expect(deletedUser).toBeNull();
+});
+
+test("Should cascade delete projects and tasks from deleted user", async () => {
+  await request(app)
+    .delete("/users/me")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const user = await User.findById(testUserOne._id);
+  const projects = await Project.find({ owner: testUserOne._id });
+  const tasks = await Task.find({ owner: testUserOne._id });
+  expect(user).toBeNull();
+  expect(projects).toEqual([]);
+  expect(tasks).toEqual([]);
 });
