@@ -8,6 +8,7 @@ const create = async (req, res) => {
   });
 
   try {
+    // TODO: validate if ancestor and children exists in the database
     await project.save();
     res.status(201).send(project);
   } catch (error) {
@@ -73,6 +74,8 @@ const update = async (req, res) => {
       return res.status(404).send();
     }
 
+    // TODO: validate if ancestor and children exists in the database
+
     updates.forEach(update => (project[update] = req.body[update]));
     await project.save();
     res.send(project);
@@ -81,4 +84,25 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { create, list, show, update };
+const erase = async (req, res) => {
+  const _id = req.params.id;
+  const owner = req.user.id;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).send({ error: "Invalid project id provided!" });
+  }
+
+  try {
+    const project = await Project.findOneAndDelete({ _id, owner });
+
+    if (!project) {
+      return res.status(404).send();
+    }
+
+    res.send(project);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+module.exports = { create, list, show, update, erase };

@@ -181,7 +181,50 @@ test("Should not update project with empty owner", async () => {
 });
 
 // DELETE ---------------------------------------------------------------------
-// Should delete project from authenticated user
-// Should not delete project from unauthenticated user
-// Should not delete project from another user
-// Should cascade delete child projects from deleted project
+
+test("Should delete project by id from authenticated user", async () => {
+  await request(app)
+    .delete(`/projects/${testProjectThree._id}`)
+    .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const deletedProject = await Project.findById(testProjectThree._id);
+  expect(deletedProject).toBeNull();
+});
+
+test("Should not delete project by id from unauthenticated user", async () => {
+  await request(app)
+    .delete(`/projects/${testProjectThree._id}`)
+    .send()
+    .expect(401);
+
+  const project = await Project.findById(testProjectThree._id);
+  expect(project).not.toBeNull();
+  expect(project._id).toEqual(testProjectThree._id);
+});
+
+test("Should not delete project by id from another user", async () => {
+  await request(app)
+    .delete(`/projects/${testProjectThree._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(404);
+
+  const project = await Project.findById(testProjectThree._id);
+  expect(project).not.toBeNull();
+  expect(project._id).toEqual(testProjectThree._id);
+});
+
+test("Should cascade delete children from deleted parent project", async () => {
+  await request(app)
+    .delete(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const project = await Project.findById(testProjectOne._id);
+  const children = await Project.find({ ancestor: testProjectOne._id });
+  expect(project).toBeNull();
+  expect(children).toBeNull;
+});

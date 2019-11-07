@@ -28,6 +28,13 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
+// Delete child projects when ancestor project is removed
+projectSchema.pre("remove", async function(next) {
+  const project = this;
+  await Project.deleteMany({ ancestor: project._id });
+  next();
+});
+
 const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;
