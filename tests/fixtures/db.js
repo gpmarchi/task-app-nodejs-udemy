@@ -38,27 +38,6 @@ const testUserTwo = {
   ]
 };
 
-const testTaskOne = {
-  _id: new mongoose.Types.ObjectId(),
-  description: "First task",
-  completed: false,
-  owner: testUserOne._id
-};
-
-const testTaskTwo = {
-  _id: new mongoose.Types.ObjectId(),
-  description: "Second task",
-  completed: true,
-  owner: testUserOne._id
-};
-
-const testTaskThree = {
-  _id: new mongoose.Types.ObjectId(),
-  description: "Third task",
-  completed: true,
-  owner: testUserTwo._id
-};
-
 const projectOneId = new mongoose.Types.ObjectId();
 const projectTwoId = new mongoose.Types.ObjectId();
 const projectThreeId = new mongoose.Types.ObjectId();
@@ -87,30 +66,54 @@ const testProjectThree = {
   children: []
 };
 
+const testTaskOne = {
+  _id: new mongoose.Types.ObjectId(),
+  description: "First task",
+  completed: false,
+  owner: testUserOne._id,
+  project: testProjectOne._id
+};
+
+const testTaskTwo = {
+  _id: new mongoose.Types.ObjectId(),
+  description: "Second task",
+  completed: true,
+  owner: testUserOne._id,
+  project: testProjectTwo._id
+};
+
+const testTaskThree = {
+  _id: new mongoose.Types.ObjectId(),
+  description: "Third task",
+  completed: true,
+  owner: testUserTwo._id,
+  project: testProjectThree._id
+};
+
 const setupDatabase = async () => {
   await User.deleteMany();
-  await Task.deleteMany();
   await Project.deleteMany();
+  await Task.deleteMany();
   await new User(testAdminUser).save();
   await new User(testUserOne).save();
   await new User(testUserTwo).save();
-  await new Task(testTaskOne).save();
-  await new Task(testTaskTwo).save();
-  await new Task(testTaskThree).save();
   await new Project(testProjectOne).save();
   await new Project(testProjectTwo).save();
   await new Project(testProjectThree).save();
+  await new Task(testTaskOne).save();
+  await new Task(testTaskTwo).save();
+  await new Task(testTaskThree).save();
 };
 
 module.exports = {
   testAdminUser,
   testUserOne,
   testUserTwo,
-  testTaskOne,
-  testTaskTwo,
-  testTaskThree,
   testProjectOne,
   testProjectTwo,
   testProjectThree,
+  testTaskOne,
+  testTaskTwo,
+  testTaskThree,
   setupDatabase
 };
