@@ -1,5 +1,3 @@
-const User = require("../models/user");
-
 const admin = async (req, res, next) => {
   try {
     const user = req.user;
