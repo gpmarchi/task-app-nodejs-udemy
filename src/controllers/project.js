@@ -93,15 +93,16 @@ const erase = async (req, res) => {
   }
 
   try {
-    const project = await Project.findOneAndDelete({ _id, owner });
+    const project = await Project.findOne({ _id, owner });
 
     if (!project) {
       return res.status(404).send();
     }
 
+    await project.remove();
     res.send(project);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 };
 
