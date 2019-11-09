@@ -35,6 +35,31 @@ projectSchema.pre("remove", async function(next) {
   next();
 });
 
+projectSchema.pre("save", async function(next) {
+  const updatedProject = this;
+  const savedProject = await Project.findById(updatedProject._id);
+  if (savedProject) {
+    if (updatedProject.children.length === 0) {
+      savedProject.children.forEach(async child => {
+        await Project.updateOne({ _id: child._id }, { ancestor: null });
+      });
+    }
+    console.log("New children", updatedProject.children);
+    console.log("Old children", savedProject.children);
+
+    if (updatedProject.children > savedProject.children) {
+      const newChildren = updatedProject.children.filter(child => {
+        return !savedProject.children.includes(child);
+      });
+      console.log("Modified children", newChildren);
+      newChildren.forEach(async child => {
+        await Project.updateOne({ _id: child }, { ancestor: savedProject._id });
+      });
+    }
+  }
+  next();
+});
+
 const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;

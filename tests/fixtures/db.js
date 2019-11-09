@@ -41,6 +41,7 @@ const testUserTwo = {
 const projectOneId = new mongoose.Types.ObjectId();
 const projectTwoId = new mongoose.Types.ObjectId();
 const projectThreeId = new mongoose.Types.ObjectId();
+const projectFourId = new mongoose.Types.ObjectId();
 
 const testProjectOne = {
   _id: projectOneId,
@@ -64,6 +65,14 @@ const testProjectThree = {
   owner: testUserTwo._id,
   ancestor: null,
   children: []
+};
+
+const testProjectFour = {
+  _id: projectFourId,
+  name: "Fourth project",
+  owner: testUserTwo._id,
+  ancestor: null,
+  children: [testProjectOne._id, testProjectThree._id]
 };
 
 const testTaskOne = {
@@ -100,6 +109,7 @@ const setupDatabase = async () => {
   await new Project(testProjectOne).save();
   await new Project(testProjectTwo).save();
   await new Project(testProjectThree).save();
+  await new Project(testProjectFour).save();
   await new Task(testTaskOne).save();
   await new Task(testTaskTwo).save();
   await new Task(testTaskThree).save();
@@ -112,6 +122,7 @@ module.exports = {
   testProjectOne,
   testProjectTwo,
   testProjectThree,
+  testProjectFour,
   testTaskOne,
   testTaskTwo,
   testTaskThree,

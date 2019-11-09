@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../src/app");
 const Project = require("../src/models/project");
@@ -5,7 +6,9 @@ const {
   testUserOne,
   testUserTwo,
   testProjectOne,
+  testProjectTwo,
   testProjectThree,
+  testProjectFour,
   setupDatabase
 } = require("./fixtures/db");
 
@@ -129,6 +132,85 @@ test("Should update project for authenticated user", async () => {
   expect(response.body.name).toEqual(name);
 });
 
+test("Should clear children and remove ancestor ref from child", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      children: []
+    })
+    .expect(200);
+
+  const childProject = await Project.findById(testProjectOne.children[0]);
+
+  expect(response.body.children).toEqual([]);
+  expect(childProject.ancestor).toEqual(null);
+});
+
+test("Should add child project and update ancestor ref in child", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      children: [testProjectTwo._id, testProjectThree._id]
+    })
+    .expect(200);
+
+  const newChildProject = await Project.findById(testProjectThree._id);
+
+  const convertedChildren = response.body.children.map(child => {
+    return JSON.stringify(child);
+  });
+
+  expect(convertedChildren).toEqual([
+    JSON.stringify(testProjectTwo._id),
+    JSON.stringify(testProjectThree._id)
+  ]);
+  expect(newChildProject.ancestor).toEqual(testProjectOne._id);
+});
+
+test("Should remove child project and update ancestor ref in child", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectFour._id}`)
+    .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
+    .send({
+      children: [testProjectOne._id]
+    })
+    .expect(200);
+
+  const oldChildProject = await Project.findById(testProjectThree._id);
+
+  const convertedChildren = response.body.children.map(child => {
+    return JSON.stringify(child);
+  });
+
+  expect(convertedChildren).toEqual([
+    JSON.stringify(testProjectTwo._id),
+    JSON.stringify(testProjectThree._id)
+  ]);
+  expect(oldChildProject.ancestor).toBeNull();
+});
+
+test("Should not update project with invalid ancestor", async () => {
+  await request(app)
+    .patch(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      ancestor: new mongoose.Types.ObjectId()
+    })
+    .expect(404);
+});
+
+test("Should not update project with invalid child", async () => {
+  await request(app)
+    .patch(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      children: [new mongoose.Types.ObjectId()]
+    })
+    .expect(404);
+});
+
 test("Should not update project for unauthenticated user", async () => {
   await request(app)
     .patch(`/projects/${testProjectOne._id}`)
@@ -217,14 +299,14 @@ test("Should not delete project by id from another user", async () => {
 });
 
 test("Should cascade delete children from deleted parent project", async () => {
-  await request(app)
+  const response = await request(app)
     .delete(`/projects/${testProjectOne._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send()
     .expect(200);
 
-  const project = await Project.findById(testProjectOne._id);
+  const project = await Project.findById(response.body._id);
   const children = await Project.find({ ancestor: testProjectOne._id });
   expect(project).toBeNull();
-  expect(children).toBeNull;
+  expect(children).toEqual([]);
 });
