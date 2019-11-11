@@ -75,6 +75,34 @@ const update = async (req, res) => {
     }
 
     // TODO: validate if ancestor and children exists in the database
+    const ancestorId = req.body.ancestor;
+    if (ancestorId) {
+      const ancestorProject = await Project.findOne({ ancestorId, owner });
+      if (!ancestorProject) {
+        return res.status(404).send();
+      }
+    }
+
+    const updatedChildren = req.body.children;
+
+    if (updatedChildren) {
+      const childrenExists = async () => {
+        for (const childId of updatedChildren) {
+          const childProject = await Project.findOne({
+            _id: mongoose.Types.ObjectId(childId),
+            owner
+          });
+          if (!childProject) {
+            return false;
+          }
+        }
+        return true;
+      };
+
+      if (!(await childrenExists())) {
+        return res.status(404).send();
+      }
+    }
 
     updates.forEach(update => (project[update] = req.body[update]));
     await project.save();

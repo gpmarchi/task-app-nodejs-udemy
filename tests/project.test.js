@@ -9,6 +9,9 @@ const {
   testProjectTwo,
   testProjectThree,
   testProjectFour,
+  testProjectFive,
+  testProjectSix,
+  testProjectSeven,
   setupDatabase
 } = require("./fixtures/db");
 
@@ -80,7 +83,7 @@ test("Should get list of projects for authenticated user", async () => {
     .expect(200);
 
   const projects = response.body;
-  expect(projects.length).toBe(2);
+  expect(projects.length).toBe(3);
 });
 
 test("Should get project by id for authenticated user", async () => {
@@ -134,17 +137,19 @@ test("Should update project for authenticated user", async () => {
 
 test("Should clear children and remove ancestor ref from child", async () => {
   const response = await request(app)
-    .patch(`/projects/${testProjectOne._id}`)
-    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .patch(`/projects/${testProjectFour._id}`)
+    .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
     .send({
       children: []
     })
     .expect(200);
 
-  const childProject = await Project.findById(testProjectOne.children[0]);
+  const childProject1 = await Project.findById(testProjectFour.children[0]);
+  const childProject2 = await Project.findById(testProjectFour.children[1]);
 
   expect(response.body.children).toEqual([]);
-  expect(childProject.ancestor).toEqual(null);
+  expect(childProject1.ancestor).toEqual(null);
+  expect(childProject2.ancestor).toEqual(null);
 });
 
 test("Should add child project and update ancestor ref in child", async () => {
@@ -152,11 +157,11 @@ test("Should add child project and update ancestor ref in child", async () => {
     .patch(`/projects/${testProjectOne._id}`)
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({
-      children: [testProjectTwo._id, testProjectThree._id]
+      children: [testProjectTwo._id, testProjectSeven._id]
     })
     .expect(200);
 
-  const newChildProject = await Project.findById(testProjectThree._id);
+  const newChildProject = await Project.findById(testProjectSeven._id);
 
   const convertedChildren = response.body.children.map(child => {
     return JSON.stringify(child);
@@ -164,7 +169,7 @@ test("Should add child project and update ancestor ref in child", async () => {
 
   expect(convertedChildren).toEqual([
     JSON.stringify(testProjectTwo._id),
-    JSON.stringify(testProjectThree._id)
+    JSON.stringify(testProjectSeven._id)
   ]);
   expect(newChildProject.ancestor).toEqual(testProjectOne._id);
 });
@@ -174,21 +179,22 @@ test("Should remove child project and update ancestor ref in child", async () =>
     .patch(`/projects/${testProjectFour._id}`)
     .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
     .send({
-      children: [testProjectOne._id]
+      children: [testProjectFive._id]
     })
     .expect(200);
 
-  const oldChildProject = await Project.findById(testProjectThree._id);
+  const oldChildProject = await Project.findById(testProjectSix._id);
 
   const convertedChildren = response.body.children.map(child => {
     return JSON.stringify(child);
   });
 
-  expect(convertedChildren).toEqual([
-    JSON.stringify(testProjectTwo._id),
-    JSON.stringify(testProjectThree._id)
-  ]);
+  expect(convertedChildren).toEqual([JSON.stringify(testProjectFive._id)]);
   expect(oldChildProject.ancestor).toBeNull();
+});
+
+test("Should change child project and update ancestor ref in old and new child", async () => {
+  expect(1).toBe(2);
 });
 
 test("Should not update project with invalid ancestor", async () => {

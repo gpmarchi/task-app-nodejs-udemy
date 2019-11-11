@@ -35,6 +35,7 @@ projectSchema.pre("remove", async function(next) {
   next();
 });
 
+// TODO: refactor this function to break up logic for updating ancestor ref on children
 projectSchema.pre("save", async function(next) {
   const updatedProject = this;
   const savedProject = await Project.findById(updatedProject._id);
@@ -44,16 +45,22 @@ projectSchema.pre("save", async function(next) {
         await Project.updateOne({ _id: child._id }, { ancestor: null });
       });
     }
-    console.log("New children", updatedProject.children);
-    console.log("Old children", savedProject.children);
 
     if (updatedProject.children > savedProject.children) {
       const newChildren = updatedProject.children.filter(child => {
         return !savedProject.children.includes(child);
       });
-      console.log("Modified children", newChildren);
       newChildren.forEach(async child => {
         await Project.updateOne({ _id: child }, { ancestor: savedProject._id });
+      });
+    }
+
+    if (updatedProject.children < savedProject.children) {
+      const removedChildren = savedProject.children.filter(child => {
+        return !updatedProject.children.includes(child);
+      });
+      removedChildren.forEach(async child => {
+        await Project.updateOne({ _id: child }, { ancestor: null });
       });
     }
   }

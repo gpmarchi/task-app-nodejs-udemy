@@ -42,6 +42,9 @@ const projectOneId = new mongoose.Types.ObjectId();
 const projectTwoId = new mongoose.Types.ObjectId();
 const projectThreeId = new mongoose.Types.ObjectId();
 const projectFourId = new mongoose.Types.ObjectId();
+const projectFiveId = new mongoose.Types.ObjectId();
+const projectSixId = new mongoose.Types.ObjectId();
+const projectSevenId = new mongoose.Types.ObjectId();
 
 const testProjectOne = {
   _id: projectOneId,
@@ -67,12 +70,36 @@ const testProjectThree = {
   children: []
 };
 
+const testProjectFive = {
+  _id: projectFiveId,
+  name: "Fifth project",
+  owner: testUserTwo._id,
+  ancestor: projectFourId,
+  children: []
+};
+
+const testProjectSix = {
+  _id: projectSixId,
+  name: "Sixth project",
+  owner: testUserTwo._id,
+  ancestor: projectFourId,
+  children: []
+};
+
 const testProjectFour = {
   _id: projectFourId,
   name: "Fourth project",
   owner: testUserTwo._id,
   ancestor: null,
-  children: [testProjectOne._id, testProjectThree._id]
+  children: [testProjectFive._id, testProjectSix._id]
+};
+
+const testProjectSeven = {
+  _id: projectSevenId,
+  name: "Seventh project",
+  owner: testUserOne._id,
+  ancestor: null,
+  children: []
 };
 
 const testTaskOne = {
@@ -110,6 +137,9 @@ const setupDatabase = async () => {
   await new Project(testProjectTwo).save();
   await new Project(testProjectThree).save();
   await new Project(testProjectFour).save();
+  await new Project(testProjectFive).save();
+  await new Project(testProjectSix).save();
+  await new Project(testProjectSeven).save();
   await new Task(testTaskOne).save();
   await new Task(testTaskTwo).save();
   await new Task(testTaskThree).save();
@@ -123,6 +153,9 @@ module.exports = {
   testProjectTwo,
   testProjectThree,
   testProjectFour,
+  testProjectFive,
+  testProjectSix,
+  testProjectSeven,
   testTaskOne,
   testTaskTwo,
   testTaskThree,
