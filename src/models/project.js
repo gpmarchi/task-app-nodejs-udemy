@@ -35,43 +35,43 @@ projectSchema.pre("remove", async function(next) {
   next();
 });
 
-// TODO: refactor this function to break up logic for updating ancestor ref on children
 projectSchema.pre("save", async function(next) {
   const updatedProject = this;
   const savedProject = await Project.findById(updatedProject._id);
   if (savedProject) {
-    if (updatedProject.children.length === 0) {
-      savedProject.children.forEach(async child => {
-        await Project.updateOne({ _id: child._id }, { ancestor: null });
-      });
-    } else if (
-      updatedProject.children.length === savedProject.children.length
-    ) {
-      savedProject.children.forEach(async (child, i) => {
-        await Project.updateOne({ _id: child }, { ancestor: null });
-        await Project.updateOne(
-          { _id: updatedProject.children[i] },
-          { ancestor: savedProject._id }
-        );
-      });
-    } else if (updatedProject.children.length > savedProject.children.length) {
-      const newChildren = updatedProject.children.filter(child => {
-        return !savedProject.children.includes(child);
-      });
-      newChildren.forEach(async child => {
-        await Project.updateOne({ _id: child }, { ancestor: savedProject._id });
-      });
-    } else if (updatedProject.children.length < savedProject.children.length) {
-      const removedChildren = savedProject.children.filter(child => {
-        return !updatedProject.children.includes(child);
-      });
-      removedChildren.forEach(async child => {
-        await Project.updateOne({ _id: child }, { ancestor: null });
-      });
-    }
+    updateChildrenAncestorReferences(savedProject, updatedProject);
+    //updateAncestorChildrenReferences()
   }
   next();
 });
+
+const updateAncestor = (children, ancestor) => {
+  children.forEach(async child => {
+    await Project.updateOne({ _id: child }, { ancestor });
+  });
+};
+
+const updateChildrenAncestorReferences = (savedProject, updatedProject) => {
+  const savedChildren = savedProject.children;
+  const updatedChildren = updatedProject.children;
+
+  if (updatedChildren.length === 0) {
+    updateAncestor(savedChildren, null);
+  } else if (updatedChildren.length === savedChildren.length) {
+    updateAncestor(savedChildren, null);
+    updateAncestor(updatedChildren, savedProject._id);
+  } else if (updatedChildren.length > savedChildren.length) {
+    const addedChildren = updatedChildren.filter(child => {
+      return !savedChildren.includes(child);
+    });
+    updateAncestor(addedChildren, savedProject._id);
+  } else if (updatedChildren.length < savedChildren.length) {
+    const removedChildren = savedChildren.filter(child => {
+      return !updatedChildren.includes(child);
+    });
+    updateAncestor(removedChildren, null);
+  }
+};
 
 const Project = mongoose.model("Project", projectSchema);
 
