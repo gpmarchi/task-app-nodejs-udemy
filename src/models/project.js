@@ -44,18 +44,24 @@ projectSchema.pre("save", async function(next) {
       savedProject.children.forEach(async child => {
         await Project.updateOne({ _id: child._id }, { ancestor: null });
       });
-    }
-
-    if (updatedProject.children > savedProject.children) {
+    } else if (
+      updatedProject.children.length === savedProject.children.length
+    ) {
+      savedProject.children.forEach(async (child, i) => {
+        await Project.updateOne({ _id: child }, { ancestor: null });
+        await Project.updateOne(
+          { _id: updatedProject.children[i] },
+          { ancestor: savedProject._id }
+        );
+      });
+    } else if (updatedProject.children.length > savedProject.children.length) {
       const newChildren = updatedProject.children.filter(child => {
         return !savedProject.children.includes(child);
       });
       newChildren.forEach(async child => {
         await Project.updateOne({ _id: child }, { ancestor: savedProject._id });
       });
-    }
-
-    if (updatedProject.children < savedProject.children) {
+    } else if (updatedProject.children.length < savedProject.children.length) {
       const removedChildren = savedProject.children.filter(child => {
         return !updatedProject.children.includes(child);
       });

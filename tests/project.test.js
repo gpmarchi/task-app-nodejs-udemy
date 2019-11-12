@@ -184,6 +184,7 @@ test("Should remove child project and update ancestor ref in child", async () =>
     .expect(200);
 
   const oldChildProject = await Project.findById(testProjectSix._id);
+  const currentChildProject = await Project.findById(testProjectFive._id);
 
   const convertedChildren = response.body.children.map(child => {
     return JSON.stringify(child);
@@ -191,10 +192,28 @@ test("Should remove child project and update ancestor ref in child", async () =>
 
   expect(convertedChildren).toEqual([JSON.stringify(testProjectFive._id)]);
   expect(oldChildProject.ancestor).toBeNull();
+  expect(currentChildProject.ancestor).toEqual(testProjectFour._id);
 });
 
-test("Should change child project and update ancestor ref in old and new child", async () => {
-  expect(1).toBe(2);
+test("Should swap child project and update ancestor ref in old and new child", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectOne._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      children: [testProjectSeven._id]
+    })
+    .expect(200);
+
+  const oldChildProject = await Project.findById(testProjectTwo._id);
+  const currentChildProject = await Project.findById(testProjectSeven._id);
+
+  const convertedChildren = response.body.children.map(child => {
+    return JSON.stringify(child);
+  });
+
+  expect(convertedChildren).toEqual([JSON.stringify(testProjectSeven._id)]);
+  expect(oldChildProject.ancestor).toBeNull();
+  expect(currentChildProject.ancestor).toEqual(testProjectOne._id);
 });
 
 test("Should not update project with invalid ancestor", async () => {
