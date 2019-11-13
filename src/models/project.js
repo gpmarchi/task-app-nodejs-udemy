@@ -39,8 +39,8 @@ projectSchema.pre("save", async function(next) {
   const updatedProject = this;
   const savedProject = await Project.findById(updatedProject._id);
   if (savedProject) {
-    updateChildrenAncestorReferences(savedProject, updatedProject);
-    //updateAncestorChildrenReferences()
+    updateAncestorReferencesOnChildren(savedProject, updatedProject);
+    //updateChildrenReferencesOnAncestor()
   }
   next();
 });
@@ -51,13 +51,16 @@ const updateAncestor = (children, ancestor) => {
   });
 };
 
-const updateChildrenAncestorReferences = (savedProject, updatedProject) => {
+const updateAncestorReferencesOnChildren = (savedProject, updatedProject) => {
   const savedChildren = savedProject.children;
   const updatedChildren = updatedProject.children;
 
   if (updatedChildren.length === 0) {
     updateAncestor(savedChildren, null);
-  } else if (updatedChildren.length === savedChildren.length) {
+  } else if (
+    updatedChildren.length === savedChildren.length &&
+    JSON.stringify(updatedChildren) !== JSON.stringify(savedChildren)
+  ) {
     updateAncestor(savedChildren, null);
     updateAncestor(updatedChildren, savedProject._id);
   } else if (updatedChildren.length > savedChildren.length) {
