@@ -40,10 +40,33 @@ projectSchema.pre("save", async function(next) {
   const savedProject = await Project.findById(updatedProject._id);
   if (savedProject) {
     updateAncestorReferencesOnChildren(savedProject, updatedProject);
-    //updateChildrenReferencesOnAncestor()
+    updateChildrenReferencesOnAncestor(savedProject, updatedProject);
   }
   next();
 });
+
+const updateChildrenReferencesOnAncestor = async (
+  savedProject,
+  updatedProject
+) => {
+  const savedAncestor = savedProject.ancestor;
+  const updatedAncestor = updatedProject.ancestor;
+
+  if (!updatedAncestor && savedAncestor) {
+    const ancestor = await Project.findById(savedAncestor);
+    // console.log("ancestor", ancestor);
+
+    const updatedAncestorChildren = ancestor.children.filter(child => {
+      return JSON.stringify(child) !== JSON.stringify(updatedProject._id);
+    });
+    // console.log("updatedAncestorChildren", updatedAncestorChildren);
+
+    await Project.updateOne(
+      { _id: ancestor._id },
+      { children: updatedAncestorChildren }
+    );
+  }
+};
 
 const updateAncestor = (children, ancestor) => {
   children.forEach(async child => {
@@ -55,7 +78,7 @@ const updateAncestorReferencesOnChildren = (savedProject, updatedProject) => {
   const savedChildren = savedProject.children;
   const updatedChildren = updatedProject.children;
 
-  if (updatedChildren.length === 0) {
+  if (updatedChildren.length === 0 && savedChildren.length > 0) {
     updateAncestor(savedChildren, null);
   } else if (
     updatedChildren.length === savedChildren.length &&

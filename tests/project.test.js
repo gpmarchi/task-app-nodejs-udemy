@@ -152,6 +152,24 @@ test("Should clear children and remove ancestor ref from child", async () => {
   expect(childProject2.ancestor).toEqual(null);
 });
 
+test("Should remove child ref from parent when removing ancestor from child", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectFive._id}`)
+    .set("Authorization", `Bearer ${testUserTwo.tokens[0].token}`)
+    .send({
+      ancestor: null
+    })
+    .expect(200);
+
+  const removedAncestorChild = [testProjectFive._id];
+  const ancestor = await Project.findById(testProjectFive.ancestor);
+
+  expect(response.body.ancestor).toBeNull();
+  expect(ancestor.children).toEqual(
+    expect.not.arrayContaining(removedAncestorChild)
+  );
+});
+
 test("Should add child project and update ancestor ref in child", async () => {
   const response = await request(app)
     .patch(`/projects/${testProjectOne._id}`)
@@ -172,6 +190,24 @@ test("Should add child project and update ancestor ref in child", async () => {
     JSON.stringify(testProjectSeven._id)
   ]);
   expect(newChildProject.ancestor).toEqual(testProjectOne._id);
+});
+
+test("Should add child ref to parent when updating ancestor", async () => {
+  const response = await request(app)
+    .patch(`/projects/${testProjectSeven._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      ancestor: testProjectOne._id
+    })
+    .expect(200);
+
+  const addedAncestorChild = [testProjectSeven._id];
+  const ancestor = await Project.findById(testProjectOne._id);
+
+  expect(JSON.stringify(response.body.ancestor)).toEqual(
+    JSON.stringify(testProjectOne._id)
+  );
+  expect(ancestor.children).toEqual(expect.arrayContaining(addedAncestorChild));
 });
 
 test("Should remove child project and update ancestor ref in child", async () => {
@@ -214,6 +250,10 @@ test("Should swap child project and update ancestor ref in old and new child", a
   expect(convertedChildren).toEqual([JSON.stringify(testProjectSeven._id)]);
   expect(oldChildProject.ancestor).toBeNull();
   expect(currentChildProject.ancestor).toEqual(testProjectOne._id);
+});
+
+test("Should swap child ref from old parent to new parent when updating ancestor", async () => {
+  expect(1).toBe(2);
 });
 
 test("Should not update project with invalid ancestor", async () => {
