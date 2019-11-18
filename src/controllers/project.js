@@ -74,17 +74,15 @@ const update = async (req, res) => {
       return res.status(404).send();
     }
 
-    // TODO: validate if ancestor and children exists in the database
     const ancestorId = req.body.ancestor;
     if (ancestorId) {
-      const ancestorProject = await Project.findOne({ ancestorId, owner });
+      const ancestorProject = await Project.findOne({ _id: ancestorId, owner });
       if (!ancestorProject) {
         return res.status(404).send();
       }
     }
 
     const updatedChildren = req.body.children;
-
     if (updatedChildren) {
       const childrenExists = async () => {
         for (const childId of updatedChildren) {

@@ -40,7 +40,7 @@ projectSchema.pre("save", async function(next) {
   const savedProject = await Project.findById(updatedProject._id);
   if (savedProject) {
     updateAncestorReferencesOnChildren(savedProject, updatedProject);
-    updateChildrenReferencesOnAncestor(savedProject, updatedProject);
+    await updateChildrenReferencesOnAncestor(savedProject, updatedProject);
   }
   next();
 });
@@ -54,18 +54,34 @@ const updateChildrenReferencesOnAncestor = async (
 
   if (!updatedAncestor && savedAncestor) {
     const ancestor = await Project.findById(savedAncestor);
-    // console.log("ancestor", ancestor);
-
     const updatedAncestorChildren = ancestor.children.filter(child => {
       return JSON.stringify(child) !== JSON.stringify(updatedProject._id);
     });
-    // console.log("updatedAncestorChildren", updatedAncestorChildren);
-
-    await Project.updateOne(
-      { _id: ancestor._id },
-      { children: updatedAncestorChildren }
-    );
+    updateChildren(ancestor._id, updatedAncestorChildren);
+  } else if (!savedAncestor && updatedAncestor) {
+    const ancestor = await Project.findById(updatedAncestor);
+    ancestor.children.push(updatedProject._id);
+    updateChildren(ancestor._id, ancestor.children);
+  } else if (
+    savedAncestor &&
+    updatedAncestor &&
+    savedAncestor !== updatedAncestor
+  ) {
+    // retirar do children do pai antigo o id do projeto atual
+    const oldAncestor = await Project.findById(savedAncestor);
+    const updatedAncestorChildren = oldAncestor.children.filter(child => {
+      return JSON.stringify(child) !== JSON.stringify(updatedProject._id);
+    });
+    updateChildren(oldAncestor._id, updatedAncestorChildren);
+    // colocar no children do pai novo o id do projeto atual
+    const newAncestor = await Project.findById(updatedAncestor);
+    newAncestor.children.push(updatedProject._id);
+    updateChildren(newAncestor._id, newAncestor.children);
   }
+};
+
+const updateChildren = async (ancestorId, children) => {
+  await Project.updateOne({ _id: ancestorId }, { children });
 };
 
 const updateAncestor = (children, ancestor) => {
