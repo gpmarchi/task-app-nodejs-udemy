@@ -45,43 +45,51 @@ projectSchema.pre("save", async function(next) {
   next();
 });
 
+const updateChildren = async (ancestorId, children) => {
+  await Project.updateOne({ _id: ancestorId }, { children });
+};
+
+const removeChildFromAncestor = async (savedAncestorId, updatedProjectId) => {
+  const ancestor = await Project.findById(savedAncestorId);
+  const updatedAncestorChildren = ancestor.children.filter(child => {
+    return JSON.stringify(child) !== JSON.stringify(updatedProjectId);
+  });
+  updateChildren(ancestor._id, updatedAncestorChildren);
+};
+
+const addChildToAncestor = async (updatedAncestorId, updatedProjectId) => {
+  const ancestor = await Project.findById(updatedAncestorId);
+  ancestor.children.push(updatedProjectId);
+  updateChildren(ancestor._id, ancestor.children);
+};
+
+const swapAncestor = async (
+  savedAncestorId,
+  updatedAncestorId,
+  updatedProjectId
+) => {
+  await removeChildFromAncestor(savedAncestorId, updatedProjectId);
+  await addChildToAncestor(updatedAncestorId, updatedProjectId);
+};
+
 const updateChildrenReferencesOnAncestor = async (
   savedProject,
   updatedProject
 ) => {
-  const savedAncestor = savedProject.ancestor;
-  const updatedAncestor = updatedProject.ancestor;
+  const savedAncestorId = savedProject.ancestor;
+  const updatedAncestorId = updatedProject.ancestor;
 
-  if (!updatedAncestor && savedAncestor) {
-    const ancestor = await Project.findById(savedAncestor);
-    const updatedAncestorChildren = ancestor.children.filter(child => {
-      return JSON.stringify(child) !== JSON.stringify(updatedProject._id);
-    });
-    updateChildren(ancestor._id, updatedAncestorChildren);
-  } else if (!savedAncestor && updatedAncestor) {
-    const ancestor = await Project.findById(updatedAncestor);
-    ancestor.children.push(updatedProject._id);
-    updateChildren(ancestor._id, ancestor.children);
+  if (!updatedAncestorId && savedAncestorId) {
+    await removeChildFromAncestor(savedAncestorId, updatedProject._id);
+  } else if (!savedAncestorId && updatedAncestorId) {
+    await addChildToAncestor(updatedAncestorId, updatedProject._id);
   } else if (
-    savedAncestor &&
-    updatedAncestor &&
-    savedAncestor !== updatedAncestor
+    savedAncestorId &&
+    updatedAncestorId &&
+    savedAncestorId !== updatedAncestorId
   ) {
-    // retirar do children do pai antigo o id do projeto atual
-    const oldAncestor = await Project.findById(savedAncestor);
-    const updatedAncestorChildren = oldAncestor.children.filter(child => {
-      return JSON.stringify(child) !== JSON.stringify(updatedProject._id);
-    });
-    updateChildren(oldAncestor._id, updatedAncestorChildren);
-    // colocar no children do pai novo o id do projeto atual
-    const newAncestor = await Project.findById(updatedAncestor);
-    newAncestor.children.push(updatedProject._id);
-    updateChildren(newAncestor._id, newAncestor.children);
+    await swapAncestor(savedAncestorId, updatedAncestorId, updatedProject._id);
   }
-};
-
-const updateChildren = async (ancestorId, children) => {
-  await Project.updateOne({ _id: ancestorId }, { children });
 };
 
 const updateAncestor = (children, ancestor) => {
