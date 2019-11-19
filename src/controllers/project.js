@@ -1,14 +1,61 @@
 const mongoose = require("mongoose");
 const Project = require("../models/project");
 
+const doesAncestorAndChildrenExistsInDatabase = async (
+  ancestorId,
+  owner,
+  children
+) => {
+  if (ancestorId) {
+    const ancestorProject = await Project.findOne({ _id: ancestorId, owner });
+    if (!ancestorProject) {
+      return false;
+    }
+  }
+
+  if (children) {
+    const childrenExists = async () => {
+      for (const childId of children) {
+        const childProject = await Project.findOne({
+          _id: mongoose.Types.ObjectId(childId),
+          owner
+        });
+        if (!childProject) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    if (!(await childrenExists())) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const create = async (req, res) => {
+  const owner = req.user._id;
+  const ancestorId = req.body.ancestor;
+  const children = req.body.children;
+
   const project = new Project({
     ...req.body,
-    owner: req.user._id
+    owner
   });
 
   try {
-    // TODO: validate if ancestor and children exists in the database
+    const validationResult = await doesAncestorAndChildrenExistsInDatabase(
+      ancestorId,
+      owner,
+      children
+    );
+
+    if (!validationResult) {
+      return res.status(404).send();
+    }
+
     await project.save();
     res.status(201).send(project);
   } catch (error) {
@@ -51,7 +98,9 @@ const show = async (req, res) => {
 
 const update = async (req, res) => {
   const _id = req.params.id;
-  const owner = req.user.id;
+  const owner = req.user._id;
+  const ancestorId = req.body.ancestor;
+  const updatedChildren = req.body.children;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).send({ error: "Invalid project id provided!" });
@@ -74,32 +123,14 @@ const update = async (req, res) => {
       return res.status(404).send();
     }
 
-    const ancestorId = req.body.ancestor;
-    if (ancestorId) {
-      const ancestorProject = await Project.findOne({ _id: ancestorId, owner });
-      if (!ancestorProject) {
-        return res.status(404).send();
-      }
-    }
+    const validationResult = await doesAncestorAndChildrenExistsInDatabase(
+      ancestorId,
+      owner,
+      updatedChildren
+    );
 
-    const updatedChildren = req.body.children;
-    if (updatedChildren) {
-      const childrenExists = async () => {
-        for (const childId of updatedChildren) {
-          const childProject = await Project.findOne({
-            _id: mongoose.Types.ObjectId(childId),
-            owner
-          });
-          if (!childProject) {
-            return false;
-          }
-        }
-        return true;
-      };
-
-      if (!(await childrenExists())) {
-        return res.status(404).send();
-      }
+    if (!validationResult) {
+      return res.status(404).send();
     }
 
     updates.forEach(update => (project[update] = req.body[update]));

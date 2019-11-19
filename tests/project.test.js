@@ -24,15 +24,12 @@ test("Should create project for authenticated user", async () => {
     .post("/projects")
     .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
     .send({
-      name: "New project",
-      ancestor: testProjectOne._id,
-      children: []
+      name: "New project"
     })
     .expect(201);
 
   const project = await Project.findById(response.body._id);
   expect(project).not.toBeNull();
-  expect(project.ancestor).toEqual(testProjectOne._id);
 });
 
 test("Should not create project with invalid data", async () => {
@@ -43,6 +40,50 @@ test("Should not create project with invalid data", async () => {
       name: ""
     })
     .expect(400);
+});
+
+test("Should not create project with invalid ancestor id", async () => {
+  await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "Test Project",
+      ancestor: "oi2u34oiu23o4iu2o3u4"
+    })
+    .expect(400);
+});
+
+test("Should not create project with invalid child id", async () => {
+  await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "Test Project",
+      children: ["oi2u34oiu23o4iu2o3u4"]
+    })
+    .expect(400);
+});
+
+test("Should not create project with inexistent ancestor id", async () => {
+  await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "Test Project",
+      ancestor: mongoose.Types.ObjectId("5d7e3a11ed8c380e25b81839")
+    })
+    .expect(404);
+});
+
+test("Should not create project with inexistent child id", async () => {
+  await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "Test Project",
+      children: [mongoose.Types.ObjectId("5d7e3a11ed8c380e25b81839")]
+    })
+    .expect(404);
 });
 
 test("Should not create project if unauthenticated", async () => {
