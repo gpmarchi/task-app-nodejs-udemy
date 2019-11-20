@@ -32,6 +32,39 @@ test("Should create project for authenticated user", async () => {
   expect(project).not.toBeNull();
 });
 
+test("Should create new child project and update children ref on ancestor", async () => {
+  const response = await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "New child project",
+      ancestor: testProjectOne._id
+    })
+    .expect(201);
+
+  const ancestor = await Project.findById(testProjectOne._id);
+  const newProject = await Project.findById(response.body._id);
+  expect(newProject).not.toBeNull();
+  expect(newProject.ancestor).toEqual(testProjectOne._id);
+  expect(ancestor.children).toEqual(expect.arrayContaining([newProject._id]));
+});
+
+test("Should create new parent project and update ancestor ref on children", async () => {
+  const response = await request(app)
+    .post("/projects")
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send({
+      name: "New parent project",
+      children: [testProjectSeven._id]
+    })
+    .expect(201);
+
+  const child = await Project.findById(testProjectSeven._id);
+  const newProject = await Project.findById(response.body._id);
+  expect(newProject).not.toBeNull();
+  expect(child.ancestor).toEqual(mongoose.Types.ObjectId(response.body._id));
+});
+
 test("Should not create project with invalid data", async () => {
   await request(app)
     .post("/projects")

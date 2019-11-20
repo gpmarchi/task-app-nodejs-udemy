@@ -41,6 +41,9 @@ projectSchema.pre("save", async function(next) {
   if (savedProject) {
     updateAncestorReferencesOnChildren(savedProject, updatedProject);
     await updateChildrenReferencesOnAncestor(savedProject, updatedProject);
+  } else {
+    await addChildToAncestor(updatedProject.ancestor, updatedProject._id);
+    await updateAncestor(updatedProject.children, updatedProject._id);
   }
   next();
 });
@@ -58,9 +61,13 @@ const removeChildFromAncestor = async (savedAncestorId, updatedProjectId) => {
 };
 
 const addChildToAncestor = async (updatedAncestorId, updatedProjectId) => {
-  const ancestor = await Project.findById(updatedAncestorId);
-  ancestor.children.push(updatedProjectId);
-  updateChildren(ancestor._id, ancestor.children);
+  if (updatedAncestorId) {
+    const ancestor = await Project.findById(updatedAncestorId);
+    if (!ancestor.children.includes(updatedProjectId)) {
+      ancestor.children.push(updatedProjectId);
+    }
+    updateChildren(ancestor._id, ancestor.children);
+  }
 };
 
 const swapAncestor = async (
