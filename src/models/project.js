@@ -14,7 +14,8 @@ const projectSchema = new mongoose.Schema(
     },
     ancestor: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Project"
+      ref: "Project",
+      default: null
     },
     children: [
       {
@@ -32,6 +33,9 @@ const projectSchema = new mongoose.Schema(
 projectSchema.pre("remove", async function(next) {
   const project = this;
   await Project.deleteMany({ ancestor: project._id });
+  if (project.ancestor) {
+    await removeChildFromAncestor(project.ancestor, project._id);
+  }
   next();
 });
 

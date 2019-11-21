@@ -469,3 +469,16 @@ test("Should cascade delete children from deleted parent project", async () => {
   expect(project).toBeNull();
   expect(children).toEqual([]);
 });
+
+test("Should remove child ref from ancestor's children on delete", async () => {
+  const response = await request(app)
+    .delete(`/projects/${testProjectTwo._id}`)
+    .set("Authorization", `Bearer ${testUserOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const deletedProject = await Project.findById(response.body._id);
+  const ancestorProject = await Project.findById(response.body.ancestor);
+  expect(deletedProject).toBeNull();
+  expect(ancestorProject.children).toEqual(expect.arrayContaining([]));
+});
