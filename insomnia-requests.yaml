@@ -1,7 +1,7 @@
 _type: export
 __export_format: 4
-__export_date: 2019-09-27T16:07:12.028Z
-__export_source: insomnia.desktop.app:v6.6.2
+__export_date: 2019-11-21T18:48:52.612Z
+__export_source: insomnia.desktop.app:v7.0.3
 resources:
   - _id: req_8f5e7a8bc2b54e2d8e5c1fdba7757c14
     authentication: {}
@@ -9,9 +9,9 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"name": "test3",
-        	"email": "test3@test.com",
-        	"password": "pass#$123",
+        	"name": "gustavo",
+        	"email": "gustavomarchi@gmail.com",
+        	"password": "qwe123!@#",
         	"admin": true
         }
     created: 1568137133383
@@ -23,7 +23,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601794
     method: POST
-    modified: 1569157404624
+    modified: 1574187843063
     name: Create user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -47,8 +47,8 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"email":"jen@gmail.com",
-        	"password":"pass#$123"
+        	"email":"gustavomarchi@gmail.com",
+        	"password":"qwe123!@#"
         }
     created: 1568303619867
     description: ""
@@ -59,7 +59,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601769
     method: POST
-    modified: 1569596130018
+    modified: 1574188726625
     name: Login user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -69,6 +69,39 @@ resources:
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{ base_url  }}/users/login"
+    _type: request
+  - _id: req_e6ba45bdb371440598940a4ba07c4d13
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: multipart/form-data
+      params:
+        - fileName: /Users/gpmarchi/Downloads/avatars/avatar-0.png
+          id: pair_a2f8f955fc26456e9290f5974474f8dd
+          name: avatar
+          type: file
+          value: ""
+    created: 1568645709490
+    description: ""
+    headers:
+      - id: pair_4419e7a9ba604198ad1e7095a05c8df5
+        name: Content-Type
+        value: multipart/form-data
+    isPrivate: false
+    metaSortKey: -1568226601765.875
+    method: POST
+    modified: 1574188406863
+    name: Upload avatar
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/users/me/avatar"
     _type: request
   - _id: req_bcdda69b689149289ffe40588933e919
     authentication:
@@ -102,30 +135,28 @@ resources:
     settingStoreCookies: true
     url: "{{ base_url  }}/tasks"
     _type: request
-  - _id: req_e6ba45bdb371440598940a4ba07c4d13
+  - _id: req_7cb51962160b48f8a21f2b6843dbd67e
     authentication:
       token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
         'b64::JC50b2tlbg==::46b', 'never' %}"
       type: bearer
     body:
-      mimeType: multipart/form-data
-      params:
-        - fileName: /Users/gpmarchi/Downloads/20190706_231531_e1b6bbe3b48c665471e5091e54f11746.png
-          id: pair_a2f8f955fc26456e9290f5974474f8dd
-          name: avatar
-          type: file
-          value: ""
-    created: 1568645709490
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "new project test"
+        }
+    created: 1573221340891
     description: ""
     headers:
-      - id: pair_4419e7a9ba604198ad1e7095a05c8df5
+      - id: pair_dbb10cba3e254ec394da6e5db1385396
         name: Content-Type
-        value: multipart/form-data
+        value: application/json
     isPrivate: false
-    metaSortKey: -1568226601759.625
+    metaSortKey: -1568226601758.0625
     method: POST
-    modified: 1569184584111
-    name: Upload avatar
+    modified: 1574358310264
+    name: Create project
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
@@ -133,7 +164,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/me/avatar"
+    url: "{{ base_url  }}/projects"
     _type: request
   - _id: req_81ab5b7485184d4b8b7c7420d2ed9106
     authentication:
@@ -151,7 +182,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601756.5
     method: GET
-    modified: 1568320922758
+    modified: 1574188637086
     name: Show profile
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -177,7 +208,7 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601754.9375
     method: GET
-    modified: 1569184604961
+    modified: 1574362050370
     name: Show avatar
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
@@ -186,7 +217,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/users/5d876d9e72dcb9528350db2a/avatar"
+    url: "{{ base_url  }}/users/5d7e3a11ed8c380e25b81839/avatar"
     _type: request
   - _id: req_300048337a294758a0823030e1dce3d1
     authentication:
@@ -279,6 +310,52 @@ resources:
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{ base_url  }}/tasks/5d7eba8e70c3f806bbd17748"
+    _type: request
+  - _id: req_f110edbb86184efdad75576bc16fb3b9
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1574187561085
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601747.0273
+    method: GET
+    modified: 1574361734336
+    name: Show projects
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/projects"
+    _type: request
+  - _id: req_cf2465ff679c4268a6b4cff51e456a0d
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1574187413944
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1568226601746.9297
+    method: GET
+    modified: 1574357849828
+    name: Show project
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/projects/5dc5748c1f430f16bffac46d"
     _type: request
   - _id: req_5c34b93399874389a517b455ca135596
     authentication:
@@ -400,6 +477,37 @@ resources:
     settingStoreCookies: true
     url: "{{ base_url  }}/tasks/5d7e3a34ed8c380e25b8183c"
     _type: request
+  - _id: req_0d14c884773b4ccfb7d6ba6388160cb0
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"children": ["5dd6cbbf2c25c534b8c25e7f","5dd6cbfc2c25c534b8c25e80","5dd6ce3aa3f93f3d0e6b0f53"]
+        }
+    created: 1574184023458
+    description: ""
+    headers:
+      - id: pair_a33da4ecbe394541a8cbbec68ecf9e58
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1568226601744.6836
+    method: PATCH
+    modified: 1574358681960
+    name: Update project
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/projects/5dd6cb8b2c25c534b8c25e7e"
+    _type: request
   - _id: req_fc950334e846475ab511de6e8895d768
     authentication:
       token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
@@ -514,6 +622,29 @@ resources:
     settingSendCookies: true
     settingStoreCookies: true
     url: "{{ base_url  }}/tasks/5d7e3aaded8c380e25b8183d"
+    _type: request
+  - _id: req_36b11b4496c04f8fb6d4074c4ecdf8e4
+    authentication:
+      token: "{% response 'body', 'req_f0b0575178aa42528d7adc584675ca5d',
+        'b64::JC50b2tlbg==::46b', 'never' %}"
+      type: bearer
+    body: {}
+    created: 1574183957156
+    description: ""
+    headers: []
+    isPrivate: false
+    metaSortKey: -1567798557054
+    method: DELETE
+    modified: 1574361527728
+    name: Delete project
+    parameters: []
+    parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: "{{ base_url  }}/projects/5dd6cb8b2c25c534b8c25e7e"
     _type: request
   - _id: env_ab3ceb96040862593e1132a65a2b2683a9b63817
     color: null
