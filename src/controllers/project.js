@@ -1,33 +1,10 @@
 const mongoose = require("mongoose");
 const Project = require("../models/project");
 
-const doesAncestorAndChildrenExistsInDatabase = async (
-  ancestorId,
-  owner,
-  children
-) => {
+const doesAncestorExistsInDatabase = async (ancestorId, owner) => {
   if (ancestorId) {
     const ancestorProject = await Project.findOne({ _id: ancestorId, owner });
     if (!ancestorProject) {
-      return false;
-    }
-  }
-
-  if (children) {
-    const childrenExists = async () => {
-      for (const childId of children) {
-        const childProject = await Project.findOne({
-          _id: mongoose.Types.ObjectId(childId),
-          owner
-        });
-        if (!childProject) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    if (!(await childrenExists())) {
       return false;
     }
   }
@@ -38,7 +15,6 @@ const doesAncestorAndChildrenExistsInDatabase = async (
 const create = async (req, res) => {
   const owner = req.user._id;
   const ancestorId = req.body.ancestor;
-  const children = req.body.children;
 
   const project = new Project({
     ...req.body,
@@ -46,10 +22,9 @@ const create = async (req, res) => {
   });
 
   try {
-    const validationResult = await doesAncestorAndChildrenExistsInDatabase(
+    const validationResult = await doesAncestorExistsInDatabase(
       ancestorId,
-      owner,
-      children
+      owner
     );
 
     if (!validationResult) {
@@ -100,7 +75,6 @@ const update = async (req, res) => {
   const _id = req.params.id;
   const owner = req.user._id;
   const ancestorId = req.body.ancestor;
-  const updatedChildren = req.body.children;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).send({ error: "Invalid project id provided!" });
@@ -123,10 +97,9 @@ const update = async (req, res) => {
       return res.status(404).send();
     }
 
-    const validationResult = await doesAncestorAndChildrenExistsInDatabase(
+    const validationResult = await doesAncestorExistsInDatabase(
       ancestorId,
-      owner,
-      updatedChildren
+      owner
     );
 
     if (!validationResult) {
