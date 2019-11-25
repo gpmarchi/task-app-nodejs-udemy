@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/tasks", auth, TaskController.create);
 
 // GET /tasks?completed=true
+// GET /tasks?project=456442
 // GET /tasks?limit10&skip=0
 // GET /tasks?sortBy=createdAt:desc
 router.get("/tasks", auth, TaskController.list);

@@ -18,7 +18,8 @@ const taskSchema = new mongoose.Schema(
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Project"
+      ref: "Project",
+      default: null
     }
   },
   {

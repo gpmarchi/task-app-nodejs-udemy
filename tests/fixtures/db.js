@@ -115,7 +115,7 @@ const testTaskTwo = {
   description: "Second task",
   completed: true,
   owner: testUserOne._id,
-  project: testProjectTwo._id
+  project: testProjectOne._id
 };
 
 const testTaskThree = {
@@ -124,6 +124,14 @@ const testTaskThree = {
   completed: true,
   owner: testUserTwo._id,
   project: testProjectThree._id
+};
+
+const testTaskFour = {
+  _id: new mongoose.Types.ObjectId(),
+  description: "Fourth task",
+  completed: false,
+  owner: testUserOne._id,
+  project: testProjectTwo._id
 };
 
 const setupDatabase = async () => {
@@ -143,6 +151,7 @@ const setupDatabase = async () => {
   await new Task(testTaskOne).save();
   await new Task(testTaskTwo).save();
   await new Task(testTaskThree).save();
+  await new Task(testTaskFour).save();
 };
 
 module.exports = {
@@ -159,5 +168,6 @@ module.exports = {
   testTaskOne,
   testTaskTwo,
   testTaskThree,
+  testTaskFour,
   setupDatabase
 };

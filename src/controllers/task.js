@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Task = require("../models/task");
+const Project = require("../models/project");
 
 const create = async (req, res) => {
   const task = new Task({
@@ -8,6 +9,16 @@ const create = async (req, res) => {
   });
 
   try {
+    if (task.project) {
+      const project = await Project.findOne({
+        _id: task.project,
+        owner: task.owner
+      });
+
+      if (!project) {
+        return res.status(404).send();
+      }
+    }
     await task.save();
     res.status(201).send(task);
   } catch (error) {
@@ -18,12 +29,17 @@ const create = async (req, res) => {
 const list = async (req, res) => {
   const match = {};
   const completed = req.query.completed;
+  const project = req.query.project;
 
   const sort = {};
   const sortBy = req.query.sortBy;
 
   if (completed) {
     match.completed = completed === "true";
+  }
+
+  if (project) {
+    match.project = project;
   }
 
   if (sortBy) {
@@ -95,6 +111,18 @@ const update = async (req, res) => {
     }
 
     updates.forEach(update => (task[update] = req.body[update]));
+
+    if (task.project) {
+      const project = await Project.findOne({
+        _id: task.project,
+        owner: task.owner
+      });
+
+      if (!project) {
+        return res.status(404).send();
+      }
+    }
+
     await task.save();
     res.send(task);
   } catch (error) {
