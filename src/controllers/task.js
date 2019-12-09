@@ -40,6 +40,8 @@ const list = async (req, res) => {
 
   if (project) {
     match.project = project;
+  } else {
+    match.project = null;
   }
 
   if (sortBy) {
