@@ -1,7 +1,7 @@
 _type: export
 __export_format: 4
-__export_date: 2019-11-21T18:48:52.612Z
-__export_source: insomnia.desktop.app:v7.0.3
+__export_date: 2020-02-08T12:17:58.055Z
+__export_source: insomnia.desktop.app:v7.0.6
 resources:
   - _id: req_8f5e7a8bc2b54e2d8e5c1fdba7757c14
     authentication: {}
@@ -29,6 +29,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -59,12 +60,13 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601769
     method: POST
-    modified: 1574188726625
+    modified: 1575046868775
     name: Login user
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -98,6 +100,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -110,9 +113,9 @@ resources:
       type: bearer
     body:
       mimeType: application/json
-      text: >-
+      text: |-
         {
-        	"description": "Add admin routes and allow access only if user has admin profile",
+        	"description": "Task Three",
         	"completed": "false"
         }
     created: 1568139083563
@@ -124,12 +127,13 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601762.75
     method: POST
-    modified: 1568750246591
+    modified: 1575923161618
     name: Create task
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -144,7 +148,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"name": "new project test"
+        	"name": "fourth project"
         }
     created: 1573221340891
     description: ""
@@ -155,12 +159,13 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601758.0625
     method: POST
-    modified: 1574358310264
+    modified: 1575471495594
     name: Create project
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -182,12 +187,13 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601756.5
     method: GET
-    modified: 1574188637086
+    modified: 1574972033293
     name: Show profile
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -214,6 +220,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -237,6 +244,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -260,6 +268,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -277,16 +286,17 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601748.6875
     method: GET
-    modified: 1569157568463
+    modified: 1575919235798
     name: Show tasks
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/tasks?limit=10&skip=0"
+    url: "{{ base_url  }}/tasks?limit=10&skip=0&project=null"
     _type: request
   - _id: req_534937e9dfed43738e85be1dba717c3b
     authentication:
@@ -306,6 +316,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -329,6 +340,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -346,16 +358,17 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601746.9297
     method: GET
-    modified: 1574357849828
+    modified: 1574688123727
     name: Show project
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/projects/5dc5748c1f430f16bffac46d"
+    url: "{{ base_url  }}/projects/5ddbd55041d61b34c390331a"
     _type: request
   - _id: req_5c34b93399874389a517b455ca135596
     authentication:
@@ -375,6 +388,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -407,6 +421,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -441,6 +456,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -455,7 +471,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"completed": "false"
+        	"project": "5ddbd55041d61b34c390331a"
         }
     created: 1568224716423
     description: ""
@@ -466,16 +482,17 @@ resources:
     isPrivate: false
     metaSortKey: -1568226601744.7812
     method: PATCH
-    modified: 1568554269307
+    modified: 1575921449623
     name: Update task
     parameters: []
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: "{{ base_url  }}/tasks/5d7e3a34ed8c380e25b8183c"
+    url: "{{ base_url  }}/tasks/5deea6fa3d9134eb95eeb2fc"
     _type: request
   - _id: req_0d14c884773b4ccfb7d6ba6388160cb0
     authentication:
@@ -503,6 +520,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -526,6 +544,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -549,6 +568,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -572,6 +592,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -595,6 +616,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -618,6 +640,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -641,6 +664,7 @@ resources:
     parentId: wrk_17ed5343046d4972b1df9ba1eda7600d
     settingDisableRenderRequestBody: false
     settingEncodeUrl: true
+    settingFollowRedirects: global
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
@@ -668,13 +692,13 @@ resources:
     color: null
     created: 1568316328665
     data:
-      base_url: localhost:3000
+      base_url: localhost:3333
     dataPropertyOrder:
       "&":
         - base_url
     isPrivate: false
     metaSortKey: 1568316328665
-    modified: 1568320360568
+    modified: 1575046846018
     name: Tasks Manager API (dev)
     parentId: env_ab3ceb96040862593e1132a65a2b2683a9b63817
     _type: environment
